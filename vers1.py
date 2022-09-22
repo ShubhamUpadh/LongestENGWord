@@ -57,7 +57,10 @@ app.layout = html.Div(style={'paddingTop': 50}, children=[
                                  'marginBottom': 40, 'marginTop': 30})
                  ]),
 
-
+        dbc.Row([html.Div(html.B("Enter the alphabets that you don't want "),
+                          style={'fontSize': 20, 'color': '#FFF', 'textAlign': 'center',
+                                 'marginBottom': 40, 'marginTop': 30})
+                 ]),
 
     ])
 
