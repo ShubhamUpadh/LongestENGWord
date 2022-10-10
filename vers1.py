@@ -108,11 +108,11 @@ def update_output_div(input_value):
                     flag = False
                     break
 
-            if flag and lenWord < len(str(lines)):
+            if flag and lenWord < len(str(lines)) and not " " in str(lines):
                 longestWord = str(lines)
                 lenWord = len(str(lines))
 
-    if longestWord == "":
+    if longestWord == "" or len(longestWord) == 5:
         return "No such word exists :( "
 
     elif input_value in ('Bijoy', 'bijoy'):
