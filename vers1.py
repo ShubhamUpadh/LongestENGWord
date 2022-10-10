@@ -72,8 +72,11 @@ app.layout = html.Div(style={'paddingTop': 50}, children=[
         html.Br(),
 
         dbc.Row([html.Div(html.B(id='my-output'),
-                          style={'marginTop': 10, 'textAlign': 'center', 'fontSize': 20, 'color': '#FFF'})
+                          style={'marginTop': 10, 'marginBottom': 15, 'textAlign': 'center', 'fontSize': 20,
+                                 'color': '#FFF'})
                  ]),
+
+        html.Hr(style={'color': '#FFF'})
 
     ])
 
@@ -85,14 +88,24 @@ app.layout = html.Div(style={'paddingTop': 50}, children=[
     Input(component_id='my-input', component_property='value')
 )
 def update_output_div(input_value):
+
+    check = True
+
     if len(input_value) == 0:
         return "NO INPUT DETECTED"
     z = list()
     for alpha in input_value:
         if alpha.isalpha() and not alpha in z:
             z.append(alpha)
+            check = False
+
+    if check:
+        return "NO INPUT DETECTED"
+
 
     print(z)
+
+
 
     lenWord = 0
     longestWord = ""
