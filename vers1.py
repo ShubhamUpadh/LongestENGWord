@@ -54,8 +54,10 @@ app.layout = html.Div(style={'paddingTop': 50}, children=[
         dbc.Row([html.Div(html.B("For example, the longest dictionary word that doesn't contain the alphabets (a, x, i,"
                                  " s) is HYDROMETEOROLOGY."),
                           style={'fontSize': 20, 'color': '#FFF', 'textAlign': 'center',
-                                 'marginBottom': 5, 'marginTop': 30})
+                                 'marginBottom': 30, 'marginTop': 30})
                  ]),
+
+        html.Hr(style={'color': '#FFF'}),
 
         dbc.Row([html.Div(html.B("Enter the alphabets that the word SHOULD NOT contain : "),
                           style={'fontSize': 20, 'color': '#FFF', 'textAlign': 'center',
@@ -69,8 +71,8 @@ app.layout = html.Div(style={'paddingTop': 50}, children=[
 
         html.Br(),
 
-        dbc.Row([html.Div(html.B("LONGEST POSSIBLE WORD IS : ", id='my-output'),
-                          style={'marginTop': 15, 'textAlign': 'center', 'fontSize': 20, 'color': '#FFF'})
+        dbc.Row([html.Div(html.B(id='my-output'),
+                          style={'marginTop': 10, 'textAlign': 'center', 'fontSize': 20, 'color': '#FFF'})
                  ]),
 
     ])
