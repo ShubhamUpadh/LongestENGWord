@@ -9,6 +9,8 @@ import dash_bootstrap_components as dbc
 import html as html
 from dash import html
 import datetime
+from dash.dependencies import Input, Output
+from dash import dcc
 
 colors = {
     'background': '#000000'
@@ -23,9 +25,9 @@ textCol = {
     'text': '#FFF'
 }
 
-# grad ={
-# 'gr': 'linearGradient('red','yellow')'
-# }
+ALLOWED_TYPES = (
+    "text"
+)
 app = dash.Dash(external_stylesheets=[dbc.themes.BOOTSTRAP])
 
 app.title = "Wordominator"
@@ -46,24 +48,49 @@ app.layout = html.Div(style={'paddingTop': 50}, children=[
 
         ]),
 
-        dbc.Row([html.Div(html.B("I will tell you the longest english word that doesn't contain the entered alphabets."),
-                          style={'fontSize': 20, 'color': '#FFF', 'textAlign': 'center',
-                                 'marginBottom': 20})
-                 ]),
+        dbc.Row(
+            [html.Div(html.B("I will tell you the longest english word that doesn't contain the entered alphabets."),
+                      style={'fontSize': 20, 'color': '#FFF', 'textAlign': 'center',
+                             'marginBottom': 20})
+             ]),
 
         dbc.Row([html.Div(html.B("For example, the longest word that doesn't contain the alphabets (a, x, i,"
                                  " s) is HYDROMETEOROLOGY."),
                           style={'fontSize': 20, 'color': '#FFF', 'textAlign': 'center',
-                                 'marginBottom': 40, 'marginTop': 30})
+                                 'marginBottom': 20, 'marginTop': 20})
                  ]),
 
-        dbc.Row([html.Div(html.B("Enter the alphabets that you don't want "),
+        html.Hr(style={'color': '#FFF', 'height': 2}),
+
+        dbc.Row([html.Div(html.B("Enter the alphabets that you don't want the target word to contain  "),
                           style={'fontSize': 20, 'color': '#FFF', 'textAlign': 'center',
-                                 'marginBottom': 40, 'marginTop': 30})
+                                 'marginBottom': 40, 'marginTop': 20})
                  ]),
+
+        html.Div(
+            [
+                dcc.Input(
+                    id="input_{}".format(_),
+                    type=_,
+                    placeholder="input {}".format(_),
+                )
+                for _ in ALLOWED_TYPES
+            ]
+            + [html.Div(id="out-all-types")]
+        )
 
     ])
 
 ])
+
+
+@app.callback(
+    Output("out-all-types", "children"),
+    [Input("input_{}".format(_), "value") for _ in ALLOWED_TYPES],
+)
+def cb_render(*vals):
+    return " | ".join((str(val) for val in vals if val))
+
+
 if __name__ == "__main__":
     app.run_server(debug=True)
