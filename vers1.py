@@ -5,12 +5,9 @@ Created on Wed Sep 21 23:46:10 2022
 @author: 91995
 """
 import dash
+import csv
 import dash_bootstrap_components as dbc
-import html as html
-from dash import html
-import datetime
-from dash.dependencies import Input, Output
-from dash import dcc
+from dash import html, Input, Output, dcc
 
 colors = {
     'background': '#000000'
@@ -25,9 +22,9 @@ textCol = {
     'text': '#FFF'
 }
 
-ALLOWED_TYPES = (
-    "text"
-)
+# grad ={
+# 'gr': 'linearGradient('red','yellow')'
+# }
 app = dash.Dash(external_stylesheets=[dbc.themes.BOOTSTRAP])
 
 app.title = "Wordominator"
@@ -48,36 +45,33 @@ app.layout = html.Div(style={'paddingTop': 50}, children=[
 
         ]),
 
-        dbc.Row(
-            [html.Div(html.B("I will tell you the longest english word that doesn't contain the entered alphabets."),
-                      style={'fontSize': 20, 'color': '#FFF', 'textAlign': 'center',
-                             'marginBottom': 20})
-             ]),
+        dbc.Row([html.Div(html.B("I will tell you the longest english dictionary word that doesn't contain the "
+                                 "entered alphabets."),
+                          style={'fontSize': 20, 'color': '#FFF', 'textAlign': 'center',
+                                 'marginBottom': 20})
+                 ]),
 
-        dbc.Row([html.Div(html.B("For example, the longest word that doesn't contain the alphabets (a, x, i,"
+        dbc.Row([html.Div(html.B("For example, the longest dictionary word that doesn't contain the alphabets (a, x, i,"
                                  " s) is HYDROMETEOROLOGY."),
                           style={'fontSize': 20, 'color': '#FFF', 'textAlign': 'center',
-                                 'marginBottom': 20, 'marginTop': 20})
+                                 'marginBottom': 5, 'marginTop': 30})
                  ]),
 
-        html.Hr(style={'color': '#FFF', 'height': 2}),
-
-        dbc.Row([html.Div(html.B("Enter the alphabets that you don't want the target word to contain  "),
+        dbc.Row([html.Div(html.B("Enter the alphabets that the word SHOULD NOT contain : "),
                           style={'fontSize': 20, 'color': '#FFF', 'textAlign': 'center',
-                                 'marginBottom': 40, 'marginTop': 20})
+                                 'marginBottom': 5, 'marginTop': 15})
                  ]),
 
-        html.Div(
-            [
-                dcc.Input(
-                    id="input_{}".format(_),
-                    type=_,
-                    placeholder="input {}".format(_),
-                )
-                for _ in ALLOWED_TYPES
-            ]
-            + [html.Div(id="out-all-types")]
-        )
+        dbc.Row(
+            [html.Div(dcc.Input(id='my-input', value='', type='text'),
+                      style={'marginTop': 0, 'textAlign': 'center', 'fontSize': 20, 'color': '#FFF'})
+             ]),
+
+        html.Br(),
+
+        dbc.Row([html.Div(html.B("LONGEST POSSIBLE WORD IS : ", id='my-output'),
+                          style={'marginTop': 15, 'textAlign': 'center', 'fontSize': 20, 'color': '#FFF'})
+                 ]),
 
     ])
 
@@ -85,11 +79,48 @@ app.layout = html.Div(style={'paddingTop': 50}, children=[
 
 
 @app.callback(
-    Output("out-all-types", "children"),
-    [Input("input_{}".format(_), "value") for _ in ALLOWED_TYPES],
+    Output(component_id='my-output', component_property='children'),
+    Input(component_id='my-input', component_property='value')
 )
-def cb_render(*vals):
-    return " | ".join((str(val) for val in vals if val))
+def update_output_div(input_value):
+    if len(input_value) == 0:
+        return "NO INPUT DETECTED"
+    z = list()
+    for alpha in input_value:
+        if alpha.isalpha() and not alpha in z:
+            z.append(alpha)
+
+    print(z)
+
+    lenWord = 0
+    longestWord = ""
+
+    with open("dictionaryedited1.csv", mode='r') as file:
+        fileF = csv.reader(file)
+        for lines in fileF:
+
+            flag = True
+
+            for alphabet in z:
+                if alphabet.lower() in str(lines) or alphabet.upper() in str(lines):
+                    flag = False
+                    break
+
+            if flag and lenWord < len(str(lines)):
+                longestWord = str(lines)
+                lenWord = len(str(lines))
+
+    if longestWord == "":
+        return "No such word exists :( "
+
+    elif input_value in ('Bijoy', 'bijoy'):
+        return "BIJOY JADAV"
+
+    elif input_value == 'Vivek':
+        return "MANAGER MARAJ"
+
+    else:
+        return str(longestWord[2:-2]).upper()
 
 
 if __name__ == "__main__":
