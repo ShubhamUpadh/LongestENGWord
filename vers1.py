@@ -88,7 +88,6 @@ app.layout = html.Div(style={'paddingTop': 50}, children=[
     Input(component_id='my-input', component_property='value')
 )
 def update_output_div(input_value):
-
     check = True
 
     if len(input_value) == 0:
@@ -102,10 +101,7 @@ def update_output_div(input_value):
     if check:
         return "NO INPUT DETECTED"
 
-
     print(z)
-
-
 
     lenWord = 0
     longestWord = ""
