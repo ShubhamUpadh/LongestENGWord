@@ -3,3 +3,7 @@
 /workspace.xml
 .idea/
 __pycache__/
+venv
+*.pyc
+.env
+.DS_Store
