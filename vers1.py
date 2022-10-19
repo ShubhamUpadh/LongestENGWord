@@ -107,7 +107,7 @@ def update_output_div(input_value):
     lenWord = 0
     longestWord = ""
 
-    with open("dictionaryedited1.csv", mode='r') as file:
+    with open("dictionaryPreprocessed.csv", mode='r') as file:
         fileF = csv.reader(file)
         for lines in fileF:
 
